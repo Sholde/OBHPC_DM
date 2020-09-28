@@ -1,12 +1,41 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
+#define MAX_INT 128
+#define ACCURACY 7
+
+//Init random seed
+void init_seed()
+{
+  srand(time(NULL));
+}
 
 //Random sign function
 char rand_sign(char x, char y)
 {
-  return (((rand() % (y - x)) + x) ? 1 : -1);
+  return (((rand() % (y - x + 1)) + x) ? 1 : -1);
 }
 
+//Random int function
+int rand_int(int max)
+{
+  return rand() % max;
+}
+
+//Init matrix with random value
+void init_matrix(int n, double **a, double **b, double **c)
+{
+  for(int i = 0; i < n; i++)
+    {
+      for(int j = 0; j < n; j++)
+	{
+	  a[i][j] = ((double)rand_int(MAX_INT) / rand_int(MAX_INT)) * rand_sign(0, 1);
+	  b[i][j] = ((double)rand_int(MAX_INT) / rand_int(MAX_INT)) * rand_sign(0, 1);
+	  c[i][j] = ((double)rand_int(MAX_INT) / rand_int(MAX_INT)) * rand_sign(0, 1);
+	}
+    }
+}
 
 //Print matrix on standard output
 void print_matrix(int n, double **m)
@@ -16,7 +45,10 @@ void print_matrix(int n, double **m)
       printf("| ");
       for(int j = 0; j < n; j++)
 	{
-	  printf("%lf ", m[i][j]);
+	  if(m[i][j] >= 0)
+	    printf(" %06.06lf ", m[i][j]);
+	  else
+	    printf("%06.06lf ", m[i][j]);
 	}
       printf("|\n");
     }
@@ -58,6 +90,10 @@ int main(int argc, char **argv)
       c[i] = malloc(sizeof(double) * n);
     }
 
+  //Initialisation
+  init_seed();
+  init_matrix(n, a, b, c);
+  
   //Compute
   for(int i = 0; i < n; i++)
     {
