@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//Random sign function
+char rand_sign(char x, char y)
+{
+  return (((rand() % (y - x)) + x) ? 1 : -1);
+}
+
+
 //Print matrix on standard output
 void print_matrix(int n, double **m)
 {
@@ -13,6 +20,21 @@ void print_matrix(int n, double **m)
 	}
       printf("|\n");
     }
+}
+
+//Free memory
+void free_matrix(int n, double **a, double **b, double **c)
+{
+  for(int i = 0; i < n; i++)
+    {
+      free(a[i]);
+      free(b[i]);
+      free(c[i]);
+    }
+  free(a);
+  free(b);
+  free(c);
+
 }
 
 //Main function
@@ -52,15 +74,7 @@ int main(int argc, char **argv)
   print_matrix(n, c);
 
   //Free memory
-  for(int i = 0; i < n; i++)
-    {
-      free(a[i]);
-      free(b[i]);
-      free(c[i]);
-    }
-  free(a);
-  free(b);
-  free(c);
+  free_matrix(n, a, b, c);
   
   return 0;
 }
