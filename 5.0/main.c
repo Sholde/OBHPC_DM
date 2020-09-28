@@ -15,13 +15,16 @@ void print_matrix(int n, double **m)
     }
 }
 
+//Main function
 int main(int argc, char **argv)
 {
+  //Check argument
   if(argc != 2)
     return 1;
   
   int n = atoi(argv[1]);
 
+  //Alloction
   double **a = malloc(sizeof(double *) * n);
   double **b = malloc(sizeof(double *) * n);
   double **c = malloc(sizeof(double *) * n);
@@ -32,7 +35,8 @@ int main(int argc, char **argv)
       b[i] = malloc(sizeof(double) * n);
       c[i] = malloc(sizeof(double) * n);
     }
-  
+
+  //Compute
   for(int i = 0; i < n; i++)
     {
       for(int j = 0; j < n; j++)
@@ -44,8 +48,10 @@ int main(int argc, char **argv)
 	}
     }
 
+  //Print
   print_matrix(n, c);
 
+  //Free memory
   for(int i = 0; i < n; i++)
     {
       free(a[i]);
