@@ -110,6 +110,21 @@ void free_matrix(int n, double **m)
   free(m);
 }
 
+//Compute
+void compute(int n, double **c, double **a, double **b)
+{
+  for (int i = 0; i < n; i++)
+    {
+      for (int j = 0; j < n; j++)
+	{
+	  for (int k = 0; k < n; k++)
+	    {
+	      c[i][j] += a[j][k] * b[k][j];
+	    }
+	}
+    }
+}
+
 //Main function
 int main(int argc, char **argv)
 {
@@ -139,16 +154,7 @@ int main(int argc, char **argv)
   init_matrix(n, a, b, c);
   
   //Compute
-  for (int i = 0; i < n; i++)
-    {
-      for (int j = 0; j < n; j++)
-	{
-	  for (int k = 0; k < n; k++)
-	    {
-	      c[i][j] += a[j][k] * b[k][j];
-	    }
-	}
-    }
+  compute(n, c, a, b);
 
   //Print
   print_matrix(n, c);
