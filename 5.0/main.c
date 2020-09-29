@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_INT 128
-#define ACCURACY 7
-
 //Init random seed
 void init_seed()
 {
@@ -18,9 +15,9 @@ char rand_sign(char x, char y)
 }
 
 //Random int function
-int rand_int(int max)
+double rand_double()
 {
-  return rand() % max;
+  return (double)(rand() % RAND_MAX) / (double)(rand() % RAND_MAX) * rand_sign(0, 1);
 }
 
 //Init matrix with random value
@@ -30,9 +27,9 @@ void init_matrix(int n, double **a, double **b, double **c)
     {
       for(int j = 0; j < n; j++)
 	{
-	  a[i][j] = ((double)rand_int(MAX_INT) / rand_int(MAX_INT)) * rand_sign(0, 1);
-	  b[i][j] = ((double)rand_int(MAX_INT) / rand_int(MAX_INT)) * rand_sign(0, 1);
-	  c[i][j] = ((double)rand_int(MAX_INT) / rand_int(MAX_INT)) * rand_sign(0, 1);
+	  a[i][j] = rand_double();
+	  b[i][j] = rand_double();
+	  c[i][j] = rand_double();
 	}
     }
 }
@@ -40,17 +37,14 @@ void init_matrix(int n, double **a, double **b, double **c)
 //Print matrix on standard output
 void print_matrix(int n, double **m)
 {
+  printf("n = %d\n", n);
   for(int i = 0; i < n; i++)
     {
-      printf("| ");
       for(int j = 0; j < n; j++)
 	{
-	  if(m[i][j] >= 0)
-	    printf(" %06.06lf ", m[i][j]);
-	  else
-	    printf("%06.06lf ", m[i][j]);
+	  printf("%lf ", m[i][j]);
 	}
-      printf("|\n");
+      printf("\n");
     }
 }
 
