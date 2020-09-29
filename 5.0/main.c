@@ -8,19 +8,19 @@
 #define ERR_PTRS 2
 
 //Init random seed
-void init_seed()
+static inline void init_seed()
 {
   srand(time(NULL));
 }
 
 //Random sign function
-char rand_sign(const char x, const char y)
+static inline char rand_sign(const char x, const char y)
 {
   return (((rand() % (y - x + 1)) + x) ? 1 : -1);
 }
 
 //Random int function
-double rand_double()
+static inline double rand_double()
 {
   return (double)(rand() % RAND_MAX) / (double)(rand() % RAND_MAX) * rand_sign(0, 1);
 }
@@ -135,11 +135,11 @@ int main(int argc, char **argv)
   init_matrix(n, a, b, c);
   
   //Compute
-  for(int i = 0; i < n; i++)
+  for (int i = 0; i < n; i++)
     {
-      for(int j = 0; j < n; j++)
+      for (int j = 0; j < n; j++)
 	{
-	  for(int k = 0; k < n; k++)
+	  for (int k = 0; k < n; k++)
 	    {
 	      c[i][j] += a[j][k] * b[k][j];
 	    }
