@@ -7,6 +7,8 @@
 #define ERR_ARG 1
 #define ERR_PTR 2
 
+#define MAX_N 100
+
 //Init random seed
 static inline void init_seed()
 {
@@ -118,7 +120,9 @@ int main(int argc, char **argv)
   int n = atoi(argv[1]);
   if (n <= 0)
     return printf("You must use a positive number\n"), ERR_ARG;
-
+  if (n > MAX_N)
+    return printf("You must enter a number <= %d\n", MAX_N);
+  
   //Alloction
   double **a = alloc_matrix(n);
   if (!a)
