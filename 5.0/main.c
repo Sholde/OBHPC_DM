@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define ALIGN 64
+
 //Init random seed
 void init_seed()
 {
@@ -48,42 +50,45 @@ void print_matrix(int n, double **m)
     }
 }
 
+//Alloc memory
+double **alloc_matrix(int n)
+{
+  double **m = aligned_alloc(ALIGN, sizeof(double) * n);
+
+  for(int i = 0; i < n; i++)
+    {
+      m[i] = aligned_alloc(ALIGN, sizeof(double) * n);
+    }
+  
+  return m;
+}
+
 //Free memory
-void free_matrix(int n, double **a, double **b, double **c)
+void free_matrix(int n, double **m)
 {
   for(int i = 0; i < n; i++)
     {
-      free(a[i]);
-      free(b[i]);
-      free(c[i]);
+      free(m[i]);
     }
-  free(a);
-  free(b);
-  free(c);
-
+  free(m);
 }
 
 //Main function
 int main(int argc, char **argv)
 {
   //Check argument
-  if(argc != 2)
-    return 1;
+  if (argc != 2)
+    return printf("Usage: ./%s [size]\n", argv[0]), 1;
   
   int n = atoi(argv[1]);
+  if (n <= 0)
+    return printf("You must use a positive number\n"), 1;
 
   //Alloction
-  double **a = malloc(sizeof(double *) * n);
-  double **b = malloc(sizeof(double *) * n);
-  double **c = malloc(sizeof(double *) * n);
-
-  for(int i = 0; i < n; i++)
-    {
-      a[i] = malloc(sizeof(double) * n);
-      b[i] = malloc(sizeof(double) * n);
-      c[i] = malloc(sizeof(double) * n);
-    }
-
+  double **a = alloc_matrix(n);
+  double **b = alloc_matrix(n);
+  double **c = alloc_matrix(n);
+  
   //Initialisation
   init_seed();
   init_matrix(n, a, b, c);
@@ -104,7 +109,9 @@ int main(int argc, char **argv)
   print_matrix(n, c);
 
   //Free memory
-  free_matrix(n, a, b, c);
+  free_matrix(n, a);
+  free_matrix(n, b);
+  free_matrix(n, c);
   
   return 0;
 }

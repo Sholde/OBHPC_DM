@@ -1,6 +1,6 @@
 CC = gcc
 
-CFLAGS = -std=c99 -g3 -W
+CFLAGS = -g3 -W
 
 OFLAGS = -O0
 
