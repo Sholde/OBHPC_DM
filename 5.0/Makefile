@@ -1,6 +1,6 @@
 CC = gcc
 
-CFLAGS = -g3 -W
+CFLAGS = -g3 -Wall
 
 OFLAGS = -O0
 
