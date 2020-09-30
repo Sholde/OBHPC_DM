@@ -58,7 +58,7 @@ void init_matrix(matrix m)
 }
 
 //Print matrix on standard output
-void print_matrix(matrix m)
+void print_matrix(const matrix m)
 {
   if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
@@ -79,7 +79,7 @@ void print_matrix(matrix m)
 }
 
 //Alloc memory
-matrix alloc_matrix(unsigned int n)
+matrix alloc_matrix(const unsigned int n)
 {
   matrix m = aligned_alloc(ALIGN, sizeof(struct static_matrix));
 
@@ -127,7 +127,7 @@ void free_matrix(matrix m)
 }
 
 //Compute
-void compute(matrix m)
+void compute_matrix(matrix m)
 {
   for (int i = 0; i < m->n; i++)
     {
@@ -162,7 +162,7 @@ int main(int argc, char **argv)
   init_matrix(m);
   
   //Compute
-  compute(m);
+  compute_matrix(m);
 
   //Print
   print_matrix(m);
