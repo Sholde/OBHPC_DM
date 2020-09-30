@@ -7,7 +7,7 @@
 #define ERR_ARG 1
 #define ERR_PTR 2
 
-#define MAX_N 100
+#define MAX_N RAND_MAX
 
 //Init random seed
 static inline void init_seed()
