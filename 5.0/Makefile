@@ -13,4 +13,4 @@ opti: main.c
 	$(CC) $(CFLAGS) -Ofast $^ -o $@
 
 clean:
-	rm -Rf *~ lookup opti
+	rm -Rf *~ lookup opti output.txt
