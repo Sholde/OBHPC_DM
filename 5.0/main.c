@@ -30,20 +30,12 @@ static inline double rand_double()
 //Init matrix with random value
 void init_matrix(int n, double **a, double **b, double **c)
 {
-  if (!a)
-    printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
-  if (!b)
-    printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
-  if (!c)
+  if (!a || !b || !c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
   
   for(int i = 0; i < n; i++)
     {
-      if (!a[i])
-	printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
-      if (!b[i])
-	printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
-      if (!c[i])
+      if (!a[i] || !b[i] || !c[i])
 	printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
       
       for(int j = 0; j < n; j++)
@@ -102,9 +94,9 @@ void free_matrix(int n, double **m)
   
   for (int i = 0; i < n; i++)
     {
-      free(m[i]);
       if (!m[i])
 	printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
+      free(m[i]);
     }
   
   free(m);
