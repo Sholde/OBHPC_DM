@@ -142,7 +142,7 @@ void compute_matrix(matrix m)
 }
 
 //Write the matrix C on file
-void write_matrix(const char *fname, matrix m)
+void write_matrix(const char *fname, const matrix m)
 {
   if (!fname)
     printf("Error: NULL pointer!\n"), exit(ERR_PTR);
