@@ -9,6 +9,16 @@
 
 #define MAX_N RAND_MAX
 
+typedef struct static_matrix
+{
+  unsigned int n;
+  double **a;
+  double **b;
+  double **c;
+}* matrix;
+
+//typedef struct static_matrix * matrix;
+
 //Init random seed
 static inline void init_seed()
 {
@@ -28,58 +38,66 @@ static inline double rand_double()
 }
 
 //Init matrix with random value
-void init_matrix(int n, double **a, double **b, double **c)
+void init_matrix(matrix m)
 {
-  if (!a || !b || !c)
+  if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
   
-  for(int i = 0; i < n; i++)
+  for(int i = 0; i < m->n; i++)
     {
-      if (!a[i] || !b[i] || !c[i])
+      if (!m->a[i] || !m->b[i] || !m->c[i])
 	printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
       
-      for(int j = 0; j < n; j++)
+      for(int j = 0; j < m->n; j++)
 	{
-	  a[i][j] = rand_double();
-	  b[i][j] = rand_double();
-	  c[i][j] = rand_double();
+	  m->a[i][j] = rand_double();
+	  m->b[i][j] = rand_double();
+	  m->c[i][j] = rand_double();
 	}
     }
 }
 
 //Print matrix on standard output
-void print_matrix(const int n, const double **m)
+void print_matrix(matrix m)
 {
-  if (!m)
+  if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
   
-  printf("n = %d\n", n);
+  printf("n = %d\n", m->n);
   
-  for (int i = 0; i < n; i++)
+  for (int i = 0; i < m->n; i++)
     {
-      if (!m[i])
+      if (!m->a[i] || !m->b[i] || !m->c[i])
 	printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
       
-      for (int j = 0; j < n; j++)
+      for (int j = 0; j < m->n; j++)
 	{
-	  printf("%lf ", m[i][j]);
+	  printf("%lf ", m->c[i][j]);
 	}
       printf("\n");
     }
 }
 
 //Alloc memory
-double **alloc_matrix(int n)
+matrix alloc_matrix(unsigned int n)
 {
-  double **m = aligned_alloc(ALIGN, sizeof(double) * n);
+  matrix m = aligned_alloc(ALIGN, sizeof(struct static_matrix));
 
   if (!m)
     return printf("Error: cannot allocate memory\n"), NULL;
+
+  m->n = n;
+  m->a = aligned_alloc(ALIGN, sizeof(double *) * n);
+  m->b = aligned_alloc(ALIGN, sizeof(double *) * n);
+  m->c = aligned_alloc(ALIGN, sizeof(double *) * n);
   
-  for (int i = 0; i < n; i++)
+  for (int i = 0; i < m->n; i++)
     {
-      m[i] = aligned_alloc(ALIGN, sizeof(double) * n);
-      if (!m[i])
+      m->a[i] = aligned_alloc(ALIGN, sizeof(double) * n);
+      m->b[i] = aligned_alloc(ALIGN, sizeof(double) * n);
+      m->c[i] = aligned_alloc(ALIGN, sizeof(double) * n);
+
+      if (!m->a[i] || !m->b[i] || !m->c[i])
 	return printf("Error: cannot allocate memory\n"), NULL;
     }
   
@@ -87,31 +105,37 @@ double **alloc_matrix(int n)
 }
 
 //Free memory
-void free_matrix(int n, double **m)
+void free_matrix(matrix m)
 {
-  if (!m)
+  if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
   
-  for (int i = 0; i < n; i++)
+  for (int i = 0; i < m->n; i++)
     {
-      if (!m[i])
+      if (!m->a[i] || !m->b[i] || !m->c[i])
 	printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
-      free(m[i]);
+      free(m->a[i]);
+      free(m->b[i]);
+      free(m->c[i]);
     }
+
+  free(m->a);
+  free(m->b);
+  free(m->c);
   
   free(m);
 }
 
 //Compute
-void compute(int n, double **c, double **a, double **b)
+void compute(matrix m)
 {
-  for (int i = 0; i < n; i++)
+  for (int i = 0; i < m->n; i++)
     {
-      for (int j = 0; j < n; j++)
+      for (int j = 0; j < m->n; j++)
 	{
-	  for (int k = 0; k < n; k++)
+	  for (int k = 0; k < m->n; k++)
 	    {
-	      c[i][j] += a[j][k] * b[k][j];
+	      m->c[i][j] += m->a[j][k] * m->b[k][j];
 	    }
 	}
     }
@@ -124,37 +148,27 @@ int main(int argc, char **argv)
   if (argc != 2)
     return printf("Usage: ./%s [size]\n", argv[0]), ERR_ARG;
   
-  int n = atoi(argv[1]);
+  unsigned int n = atoi(argv[1]);
   if (n <= 0)
     return printf("You must use a positive number\n"), ERR_ARG;
   if (n > MAX_N)
     return printf("You must enter a number <= %d\n", MAX_N);
-  
+
   //Alloction
-  double **a = alloc_matrix(n);
-  if (!a)
-    return ERR_PTR;
-  double **b = alloc_matrix(n);
-  if (!b)
-    return ERR_PTR;
-  double **c = alloc_matrix(n);
-  if (!c)
-    return ERR_PTR;
+  matrix m = alloc_matrix(n);
   
   //Initialisation
   init_seed();
-  init_matrix(n, a, b, c);
+  init_matrix(m);
   
   //Compute
-  compute(n, c, a, b);
+  compute(m);
 
   //Print
-  print_matrix(n, c);
+  print_matrix(m);
 
   //Free memory
-  free_matrix(n, a);
-  free_matrix(n, b);
-  free_matrix(n, c);
+  free_matrix(m);
   
   return 0;
 }
