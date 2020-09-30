@@ -16,15 +16,15 @@ static inline void init_seed()
 }
 
 //Random sign function
-static inline char rand_sign(const char x, const char y)
+static inline char rand_sign()
 {
-  return (((rand() % (y - x + 1)) + x) ? 1 : -1);
+  return (rand() & 1) ? 1 : -1;
 }
 
 //Random int function
 static inline double rand_double()
 {
-  return (double)rand() / (double)rand() * rand_sign(0, 1);
+  return (double)rand() / (double)rand() * rand_sign();
 }
 
 //Init matrix with random value
