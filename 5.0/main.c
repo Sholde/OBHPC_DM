@@ -11,7 +11,7 @@
 
 typedef struct static_matrix
 {
-  unsigned int n;
+  int n;
   double **a;
   double **b;
   double **c;
@@ -148,7 +148,7 @@ int main(int argc, char **argv)
   if (argc != 2)
     return printf("Usage: ./%s [size]\n", argv[0]), ERR_ARG;
   
-  unsigned int n = atoi(argv[1]);
+  int n = atoi(argv[1]);
   if (n <= 0)
     return printf("You must use a positive number\n"), ERR_ARG;
   if (n > MAX_N)
