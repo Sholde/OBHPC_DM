@@ -1,0 +1,35 @@
+Information
+-----------
+
+A Makefile is given to compile file.
+
+Use `make` to compile and `make clean` to clean directory.
+
+You can execute program by typing : `./lookup [size] [output file]`
+
+Note : Makefile clean the default output.txt file
+
+
+Code explaination
+-----------------
+
+I use a structure to simplify code,
+I use always 3 matrix and the counter on all function, so it's for this.
+
+All function are norlmally explicit.
+
+Little information about my randoms function :
+       - rand_sign : use for random 1 and -1
+       - rand_double : use for random double, I pick 2 random integer and divide between us and after aply rand_sign
+
+Error :
+
+Error is hanfle by if statements whenever if necessary to assume that function is not bad uses.
+Exept compute function to don't stop process when the cpu compute the reduc/dotprod.
+
+Funtion :
+	- print a matrix in given file
+	- init matrix with random value
+	- release memory
+	- compute function
+	- randoms function
