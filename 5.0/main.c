@@ -24,7 +24,7 @@ static inline char rand_sign(const char x, const char y)
 //Random int function
 static inline double rand_double()
 {
-  return (double)(rand() % RAND_MAX) / (double)(rand() % RAND_MAX) * rand_sign(0, 1);
+  return (double)rand() / (double)rand() * rand_sign(0, 1);
 }
 
 //Init matrix with random value
