@@ -58,12 +58,12 @@ void init_matrix(matrix m)
 }
 
 //Print matrix on standard output
-void print_matrix(const matrix m)
+void print_matrix(FILE *fd, const matrix m)
 {
-  if (!m || !m->a || !m->b || !m->c)
+  if (!fd || !m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
   
-  printf("n = %d\n", m->n);
+  fprintf(fd, "n = %d\n", m->n);
   
   for (int i = 0; i < m->n; i++)
     {
@@ -72,9 +72,9 @@ void print_matrix(const matrix m)
       
       for (int j = 0; j < m->n; j++)
 	{
-	  printf("%lf ", m->c[i][j]);
+	  fprintf(fd, "%lf ", m->c[i][j]);
 	}
-      printf("\n");
+      fprintf(fd, "\n");
     }
 }
 
@@ -141,12 +141,28 @@ void compute_matrix(matrix m)
     }
 }
 
+//Write the matrix C on file
+void write_matrix(const char *fname, matrix m)
+{
+  if (!fname)
+    printf("Error: NULL pointer!\n"), exit(ERR_PTR);
+
+  FILE *fd = fopen(fname, "w");
+
+  if (!fd)
+    printf("Error: NULL pointer!\n"), exit(ERR_PTR);
+
+  print_matrix(fd, m);
+
+  fclose(fd);
+}
+
 //Main function
 int main(int argc, char **argv)
 {
   //Check argument
-  if (argc != 2)
-    return printf("Usage: ./%s [size]\n", argv[0]), ERR_ARG;
+  if (argc != 3)
+    return printf("Usage: %s [size] [output file]\n", argv[0]), ERR_ARG;
   
   int n = atoi(argv[1]);
   if (n <= 0)
@@ -165,7 +181,7 @@ int main(int argc, char **argv)
   compute_matrix(m);
 
   //Print
-  print_matrix(m);
+  write_matrix(argv[2], m);
 
   //Free memory
   free_matrix(m);
