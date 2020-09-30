@@ -4,12 +4,13 @@ CFLAGS = -g3 -Wall
 
 OFLAGS = -O0
 
-EXE = main
+all: clean lookup
 
-all: clean $(EXE)
-
-$(EXE): main.c
+lookup: main.c
 	$(CC) $(CFLAGS) $(OFLAGS) $^ -o $@
 
+opti: main.c
+	$(CC) $(CFLAGS) -Ofast $^ -o $@
+
 clean:
-	rm -Rf *~ $(EXE)
+	rm -Rf *~ lookup opti
