@@ -18,7 +18,7 @@ typedef struct rdc_s
 }* rdc_t;
 
 //Init random seed
-static inline void init_seed()
+static inline void seed_init()
 {
   srand(time(NULL));
 }
@@ -36,7 +36,7 @@ static inline double rand_double()
 }
 
 //Init rdc_t with random value
-void init_rdc_t(rdc_t m)
+void rdc_t_init(rdc_t m)
 {
   if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
@@ -56,7 +56,7 @@ void init_rdc_t(rdc_t m)
 }
 
 //Print rdc_t on standard output
-void print_rdc_t(FILE *fd, const rdc_t m)
+void rdc_t_print(FILE *fd, const rdc_t m)
 {
   if (!fd || !m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
@@ -77,7 +77,7 @@ void print_rdc_t(FILE *fd, const rdc_t m)
 }
 
 //Alloc memory
-rdc_t alloc_rdc_t(const unsigned int n)
+rdc_t rdc_t_alloc(const unsigned int n)
 {
   rdc_t m = aligned_alloc(ALIGN, sizeof(struct rdc_s));
 
@@ -103,7 +103,7 @@ rdc_t alloc_rdc_t(const unsigned int n)
 }
 
 //Free memory
-void free_rdc_t(rdc_t m)
+void rdc_t_free(rdc_t m)
 {
   if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
@@ -125,7 +125,7 @@ void free_rdc_t(rdc_t m)
 }
 
 //Compute
-void compute_rdc_t_(rdc_t m)
+void rdc_t_compute_(rdc_t m)
 {
   for (int i = 0; i < m->n; i++)
     {
@@ -153,14 +153,14 @@ void rdc_t_pointer_check(rdc_t m)
 }
 
 //
-void compute_rdc_t(rdc_t m)
+void rdc_t_compute(rdc_t m)
 {
   rdc_t_pointer_check(m);
-  compute_rdc_t_(m);
+  rdc_t_compute_(m);
 }
 
 //Write the rdc_t C on file
-void write_rdc_t(const char *fname, const rdc_t m)
+void rdc_t_write(const char *fname, const rdc_t m)
 {
   if (!fname)
     printf("Error: NULL pointer!\n"), exit(ERR_PTR);
@@ -170,7 +170,7 @@ void write_rdc_t(const char *fname, const rdc_t m)
   if (!fd)
     printf("Error: NULL pointer!\n"), exit(ERR_PTR);
 
-  print_rdc_t(fd, m);
+  rdc_t_print(fd, m);
 
   fclose(fd);
 }
@@ -189,20 +189,20 @@ int main(int argc, char **argv)
     return printf("You must enter a number <= %d\n", MAX_N);
 
   //Alloction
-  rdc_t m = alloc_rdc_t(n);
+  rdc_t m = rdc_t_alloc(n);
   
   //Initialisation
-  init_seed();
-  init_rdc_t(m);
+  seed_init();
+  rdc_t_init(m);
   
   //Compute
-  compute_rdc_t(m);
+  rdc_t_compute(m);
 
   //Print
-  write_rdc_t(argv[2], m);
+  rdc_t_write(argv[2], m);
 
   //Free memory
-  free_rdc_t(m);
+  rdc_t_free(m);
   
   return 0;
 }
