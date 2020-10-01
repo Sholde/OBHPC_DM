@@ -29,6 +29,10 @@ Error is handle by `if` statements whenever it is necessary to assume that funct
 
 Except compute function to don't stop process when the cpu compute the reduc/dotprod, so I use the trick that you show us, which is to call an function who compute after pointers are checks.
 
+There are 2 error codes :
+      - ERR_ARG : error of argument (i.e. : ./rdc 5, ther is not output file)
+      - ERR_PTR : error of pointer (i.e. : the pointer is NULL)
+
 Funtions
 --------
 
