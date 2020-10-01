@@ -17,8 +17,6 @@ typedef struct static_matrix
   double **c;
 }* matrix;
 
-//typedef struct static_matrix * matrix;
-
 //Init random seed
 static inline void init_seed()
 {
