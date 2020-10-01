@@ -9,13 +9,13 @@
 
 #define MAX_N RAND_MAX
 
-typedef struct static_matrix
+typedef struct rdc_s
 {
   int n;
   double **a;
   double **b;
   double **c;
-}* matrix;
+}* rdc_t;
 
 //Init random seed
 static inline void init_seed()
@@ -35,8 +35,8 @@ static inline double rand_double()
   return (double)rand() / (double)rand() * rand_sign();
 }
 
-//Init matrix with random value
-void init_matrix(matrix m)
+//Init rdc_t with random value
+void init_rdc_t(rdc_t m)
 {
   if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
@@ -55,8 +55,8 @@ void init_matrix(matrix m)
     }
 }
 
-//Print matrix on standard output
-void print_matrix(FILE *fd, const matrix m)
+//Print rdc_t on standard output
+void print_rdc_t(FILE *fd, const rdc_t m)
 {
   if (!fd || !m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
@@ -77,9 +77,9 @@ void print_matrix(FILE *fd, const matrix m)
 }
 
 //Alloc memory
-matrix alloc_matrix(const unsigned int n)
+rdc_t alloc_rdc_t(const unsigned int n)
 {
-  matrix m = aligned_alloc(ALIGN, sizeof(struct static_matrix));
+  rdc_t m = aligned_alloc(ALIGN, sizeof(struct rdc_s));
 
   if (!m)
     return printf("Error: cannot allocate memory\n"), NULL;
@@ -103,7 +103,7 @@ matrix alloc_matrix(const unsigned int n)
 }
 
 //Free memory
-void free_matrix(matrix m)
+void free_rdc_t(rdc_t m)
 {
   if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
@@ -125,7 +125,7 @@ void free_matrix(matrix m)
 }
 
 //Compute
-void compute_matrix_(matrix m)
+void compute_rdc_t_(rdc_t m)
 {
   for (int i = 0; i < m->n; i++)
     {
@@ -140,7 +140,7 @@ void compute_matrix_(matrix m)
 }
 
 //Check pointer
-void matrix_pointer_check(matrix m)
+void rdc_t_pointer_check(rdc_t m)
 {
   if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL!\n"), exit(ERR_PTR);
@@ -153,14 +153,14 @@ void matrix_pointer_check(matrix m)
 }
 
 //
-void compute_matrix(matrix m)
+void compute_rdc_t(rdc_t m)
 {
-  matrix_pointer_check(m);
-  compute_matrix_(m);
+  rdc_t_pointer_check(m);
+  compute_rdc_t_(m);
 }
 
-//Write the matrix C on file
-void write_matrix(const char *fname, const matrix m)
+//Write the rdc_t C on file
+void write_rdc_t(const char *fname, const rdc_t m)
 {
   if (!fname)
     printf("Error: NULL pointer!\n"), exit(ERR_PTR);
@@ -170,7 +170,7 @@ void write_matrix(const char *fname, const matrix m)
   if (!fd)
     printf("Error: NULL pointer!\n"), exit(ERR_PTR);
 
-  print_matrix(fd, m);
+  print_rdc_t(fd, m);
 
   fclose(fd);
 }
@@ -189,20 +189,20 @@ int main(int argc, char **argv)
     return printf("You must enter a number <= %d\n", MAX_N);
 
   //Alloction
-  matrix m = alloc_matrix(n);
+  rdc_t m = alloc_rdc_t(n);
   
   //Initialisation
   init_seed();
-  init_matrix(m);
+  init_rdc_t(m);
   
   //Compute
-  compute_matrix(m);
+  compute_rdc_t(m);
 
   //Print
-  write_matrix(argv[2], m);
+  write_rdc_t(argv[2], m);
 
   //Free memory
-  free_matrix(m);
+  free_rdc_t(m);
   
   return 0;
 }
