@@ -9,11 +9,13 @@
 //Main function
 int main(int argc, char **argv)
 {
-  //Check argument
+  //Check argument (needed 3)
   if (argc != 3)
     return printf("Usage: %s [size] [output file]\n", argv[0]), ERR_ARG;
   
   int n = atoi(argv[1]);
+
+  //Check number (needed to be positive)
   if (n <= 0)
     return printf("You must use a positive number\n"), ERR_ARG;
   if (n > MAX_N)
@@ -21,6 +23,8 @@ int main(int argc, char **argv)
 
   //Alloction
   rdc_t m = rdc_t_alloc(n);
+  if (!m)
+    return printf("Error: pointer cannot be NULL\n"), ERR_PTR;
   
   //Initialisation
   seed_init();
