@@ -127,7 +127,7 @@ void free_matrix(matrix m)
 }
 
 //Compute
-void compute_matrix(matrix m)
+void compute_matrix_(matrix m)
 {
   for (int i = 0; i < m->n; i++)
     {
@@ -139,6 +139,26 @@ void compute_matrix(matrix m)
 	    }
 	}
     }
+}
+
+//Check pointer
+void matrix_pointer_check(matrix m)
+{
+  if (!m || !m->a || !m->b || !m->c)
+    printf("Error: pointer cannot be NULL!\n"), exit(ERR_PTR);
+  
+  for (int i = 0; i < m->n; i++)
+    {
+      if(!m->a[i] || !m->b[i] || !m->c[i])
+	printf("Error: pointer cannot be NULL!\n"), exit(ERR_PTR);
+    }
+}
+
+//
+void compute_matrix(matrix m)
+{
+  matrix_pointer_check(m);
+  compute_matrix_(m);
 }
 
 //Write the matrix C on file
