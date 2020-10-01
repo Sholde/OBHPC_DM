@@ -5,7 +5,7 @@ A Makefile is given to compile file.
 
 Use `make` to compile and `make clean` to clean directory.
 
-You can execute the program by typing : `./lookup [size] [output file]`
+You can execute the program by typing : `./rdc [size] [output file]`
 
 Note : Makefile clean the default output.txt file
 
