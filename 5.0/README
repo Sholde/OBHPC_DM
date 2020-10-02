@@ -4,7 +4,7 @@ Note : I am not an expert in English as you are going to see.
 Informations
 ------------
 
-A Makefile is given to compile file.
+A Makefile is given to compile the project.
 
 Use `make` to compile and `make clean` to clean directory.
 
