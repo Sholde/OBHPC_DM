@@ -1,6 +1,8 @@
 #ifndef _rdc_h_
 #define _rdc_h_
 
+#include "rdtsc.h"
+
 //Init rdc_t with random value
 void rdc_t_init(rdc_t m)
 {
@@ -122,7 +124,16 @@ void rdc_t_pointer_check(rdc_t m)
 void rdc_t_compute(rdc_t m)
 {
   rdc_t_pointer_check(m);
+
+  double before = rdtsc();
+  
   rdc_t_compute_(m);
+  
+  double after = rdtsc();
+
+  double res = after - before;
+
+  printf("%lf\n", res);
 }
 
 //Write the rdc_t C on file
