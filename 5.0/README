@@ -1,8 +1,8 @@
 Note : I am not an expert in English as you are going to see.
 
 
-Information
------------
+Informations
+------------
 
 A Makefile is given to compile file.
 
@@ -68,6 +68,6 @@ Funtions
 Versions
 --------
 
-	- V1 : I use 3 `double **` to represent the 3 matrix, and an integer to represent their size
+	- v1 : I use 3 `double **` to represent the 3 matrix, and an integer to represent their size
 
-	- V2 : I found that V1 was not organize and I always put all matrix on all funtion parameters. Therefore I decided to create an structure which contain all `double **` and the integer. But this version can't control if the compute function doesn't alter `a` and `b` matrix.
+	- v2 : I found that V1 was not organize and I always put all matrix on all funtion parameters. Therefore I decided to create an structure which contain all `double **` and the integer. But this version can't control if the compute function doesn't alter `a` and `b` matrix.
