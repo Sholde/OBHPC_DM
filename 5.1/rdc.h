@@ -44,6 +44,13 @@ void rdc_t_print(FILE *fd, const rdc_t m)
     }
 }
 
+//Print performance
+void print_perf(int n, double p)
+{
+  printf("Size = %d\n", n);
+  printf("Cycles = %lf\n", p);
+}
+
 //Alloc memory
 rdc_t rdc_t_alloc(const unsigned int n)
 {
@@ -133,7 +140,7 @@ void rdc_t_compute(rdc_t m)
 
   double cycles = after - before;
   
-  printf("Cycles : %lf\n", cycles);
+  print_perf(m->n, cycles);
 }
 
 //Write the rdc_t C on file
