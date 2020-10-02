@@ -131,9 +131,9 @@ void rdc_t_compute(rdc_t m)
   
   double after = rdtsc();
 
-  double res = after - before;
-
-  printf("%lf\n", res);
+  double cycles = after - before;
+  
+  printf("Cycles : %lf\n", cycles);
 }
 
 //Write the rdc_t C on file
