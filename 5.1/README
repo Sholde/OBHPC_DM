@@ -1,0 +1,73 @@
+Note : I am not an expert in English as you are going to see.
+
+
+Informations
+------------
+
+A Makefile is given to compile the project.
+
+Use `make` to compile and `make clean` to clean directory.
+
+You can execute the program by typing : `./rdc [size] [output file]`
+
+Note : Makefile clean all files begining by `out`.
+
+
+Overview
+--------
+
+This code generate 3 matrix with random values and apply this algorithm :
+
+for (i < n)
+    for (j < n)
+    	for (k < n)
+	    c[i][k] += a[i][k] * b[i][k];
+
+
+n : size of all matrix (they are square matrix with the same size)
+a, b, c : matrix
+
+After the compute, store the size and content of matrix `c` into output file.
+
+
+Code explaination
+-----------------
+
+I use a structure to simplify code,
+I always use 3 matrix and the integer which contain their size on all function where the structure is use, so it's for that.
+
+All function are norlmally explicit.
+
+Little information about my randoms function :
+       - rand_sign : use for random 1 and -1
+       - rand_double : use for random double, I pick 2 random integer and divide between them and after aply rand_sign
+
+
+Errors
+------
+
+Error is handle by `if` statements whenever it is necessary to assume that functions are not bad uses.
+
+Except compute function to don't stop process when the cpu compute the reduc/dotprod, so I use the trick that you show us, which is to call an function who compute after pointers are checks.
+
+There are 2 error codes :
+      - ERR_ARG : error of argument (i.e. : ./rdc 5, ther is not output file)
+      - ERR_PTR : error of pointer (i.e. : the pointer is NULL)
+
+
+Funtions
+--------
+
+	- print a matrix in a given file
+	- init matrix with random value
+	- release memory
+	- compute function
+	- random functions
+
+
+Versions
+--------
+
+	- v1 : I use 3 `double **` to represent the 3 matrix, and an integer to represent their size
+
+	- v2 : I found that V1 was not organize and I always put all matrix on all funtion parameters. Therefore I decided to create an structure which contain all `double **` and the integer. But this version can't control if the compute function doesn't alter `a` and `b` matrix.
