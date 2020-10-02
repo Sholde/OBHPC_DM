@@ -1,5 +1,6 @@
 Note : I am not an expert in English as you are going to see.
 
+
 Information
 -----------
 
@@ -24,6 +25,7 @@ Little information about my randoms function :
        - rand_sign : use for random 1 and -1
        - rand_double : use for random double, I pick 2 random integer and divide between them and after aply rand_sign
 
+
 Errors
 ------
 
@@ -35,6 +37,7 @@ There are 2 error codes :
       - ERR_ARG : error of argument (i.e. : ./rdc 5, ther is not output file)
       - ERR_PTR : error of pointer (i.e. : the pointer is NULL)
 
+
 Funtions
 --------
 
@@ -43,3 +46,11 @@ Funtions
 	- release memory
 	- compute function
 	- random functions
+
+
+Versions
+--------
+
+	- V1 : I use 3 `double **` to represent the 3 matrix, and an integer to represent their size
+	- V2 : I found that V1 was not organize and I always put all matrix on all funtion parameters. Therefore I decided to create an structure which contain all `double **` and the integer
+	- V3 : TODO
