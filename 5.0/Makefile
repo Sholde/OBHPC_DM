@@ -13,4 +13,4 @@ opti: main.c
 	$(CC) $(CFLAGS) -Ofast $^ -o $@
 
 clean:
-	rm -Rf *~ rdc opti output.txt
+	rm -Rf *~ rdc out*
