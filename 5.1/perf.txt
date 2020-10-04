@@ -1,8 +1,0 @@
-Size = 5
-Cycles = 2150.000000
-Size = 10
-Cycles = 13586.000000
-Size = 50
-Cycles = 1619984.000000
-Size = 100
-Cycles = 13922370.000000

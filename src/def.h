@@ -8,6 +8,8 @@
 
 #define MAX_N RAND_MAX
 
+#define ITE 100
+
 typedef struct rdc_s
 {
   int n;
