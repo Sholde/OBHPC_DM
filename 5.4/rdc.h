@@ -11,14 +11,11 @@ void rdc_t_init(rdc_t m)
   
   for(int i = 0; i < m->n; i++)
     {
-      if (!m->a[i] || !m->b[i] || !m->c[i])
-	printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
-      
       for(int j = 0; j < m->n; j++)
 	{
-	  m->a[i][j] = rand_double();
-	  m->b[i][j] = rand_double();
-	  m->c[i][j] = rand_double();
+	  m->a[i * m->n + j] = rand_double();
+	  m->b[i * m->n + j] = rand_double();
+	  m->c[i * m->n + j] = rand_double();
 	}
     }
 }
@@ -33,12 +30,9 @@ void rdc_t_print(FILE *fd, const rdc_t m)
   
   for (int i = 0; i < m->n; i++)
     {
-      if (!m->a[i] || !m->b[i] || !m->c[i])
-	printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
-      
       for (int j = 0; j < m->n; j++)
 	{
-	  fprintf(fd, "%lf ", m->c[i][j]);
+	  fprintf(fd, "%lf ", m->c[i * m->n + j]);
 	}
       fprintf(fd, "\n");
     }
@@ -60,19 +54,12 @@ rdc_t rdc_t_alloc(const unsigned int n)
     return printf("Error: cannot allocate memory\n"), NULL;
 
   m->n = n;
-  m->a = aligned_alloc(ALIGN, sizeof(double *) * n);
-  m->b = aligned_alloc(ALIGN, sizeof(double *) * n);
-  m->c = aligned_alloc(ALIGN, sizeof(double *) * n);
+  m->a = aligned_alloc(ALIGN, sizeof(double) * n * n);
+  m->b = aligned_alloc(ALIGN, sizeof(double) * n * n);
+  m->c = aligned_alloc(ALIGN, sizeof(double) * n * n);
   
-  for (int i = 0; i < m->n; i++)
-    {
-      m->a[i] = aligned_alloc(ALIGN, sizeof(double) * n);
-      m->b[i] = aligned_alloc(ALIGN, sizeof(double) * n);
-      m->c[i] = aligned_alloc(ALIGN, sizeof(double) * n);
-
-      if (!m->a[i] || !m->b[i] || !m->c[i])
-	return printf("Error: cannot allocate memory\n"), NULL;
-    }
+  if (!m->a || !m->b || !m->c)
+    return printf("Error: cannot allocate memory\n"), NULL;
   
   return m;
 }
@@ -83,15 +70,6 @@ void rdc_t_free(rdc_t m)
   if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
   
-  for (int i = 0; i < m->n; i++)
-    {
-      if (!m->a[i] || !m->b[i] || !m->c[i])
-	printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
-      free(m->a[i]);
-      free(m->b[i]);
-      free(m->c[i]);
-    }
-
   free(m->a);
   free(m->b);
   free(m->c);
@@ -108,7 +86,7 @@ void rdc_t_compute_(rdc_t m)
 	{
 	  for (int k = 0; k < m->n; k++)
 	    {
-	      m->c[i][j] += m->a[j][k] * m->b[k][j];
+	      m->c[i * m->n + j] += m->a[i * m->n + k] * m->b[k * m->n + j];
 	    }
 	}
     }
@@ -119,12 +97,6 @@ void rdc_t_pointer_check(rdc_t m)
 {
   if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL!\n"), exit(ERR_PTR);
-  
-  for (int i = 0; i < m->n; i++)
-    {
-      if(!m->a[i] || !m->b[i] || !m->c[i])
-	printf("Error: pointer cannot be NULL!\n"), exit(ERR_PTR);
-    }
 }
 
 //
@@ -134,13 +106,18 @@ void rdc_t_compute(rdc_t m)
 
   double before = rdtsc();
   
-  rdc_t_compute_(m);
+  for (int i = 0; i < ALIGN; i++)
+    {
+      rdc_t_compute_(m);
+    }
   
   double after = rdtsc();
-
-  double cycles = after - before;
   
-  print_perf(m->n, cycles);
+  unsigned long long cycles = after - before;
+
+  unsigned long long cycles_per_run = cycles >> 6; // 2^6 = 64
+  
+  print_perf(m->n, cycles_per_run);
 }
 
 //Write the rdc_t C on file
