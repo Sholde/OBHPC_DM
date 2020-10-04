@@ -134,13 +134,18 @@ void rdc_t_compute(rdc_t m)
 
   double before = rdtsc();
   
-  rdc_t_compute_(m);
+  for (int i = 0; i < ALIGN; i++)
+    {
+      rdc_t_compute_(m);
+    }
   
   double after = rdtsc();
-
-  double cycles = after - before;
   
-  print_perf(m->n, cycles);
+  unsigned long long cycles = after - before;
+
+  unsigned long long cycles_per_run = cycles >> 6; // 2^6 = 64
+  
+  print_perf(m->n, cycles_per_run);
 }
 
 //Write the rdc_t C on file
