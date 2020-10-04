@@ -13,9 +13,9 @@ void rdc_t_init(rdc_t m)
     {
       for(int j = 0; j < m->n; j++)
 	{
-	  m->a[i * m->n + j] = rand_double();
-	  m->b[i * m->n + j] = rand_double();
-	  m->c[i * m->n + j] = rand_double();
+	  m->a[i * m->n + j] = 1; //rand_double();
+	  m->b[i * m->n + j] = 1; //rand_double();
+	  m->c[i * m->n + j] = 1; //rand_double();
 	}
     }
 }
@@ -106,6 +106,26 @@ void rdc_t_compute_2(rdc_t m)
     }
 }
 
+void rdc_t_compute_3(rdc_t m)
+{
+  double *tmp = malloc(sizeof(double) * m->n * m->n);
+  for (int i = 0; i < m->n; i++)
+    {
+      for (int j = 0; j < m->n; j++)
+	{
+	  tmp[i * m->n + j] = m->a[i * m->n + j] * m->b[j * m->n + i];
+	}
+    }
+
+  for (int i = 0; i < m->n; i++)
+    {
+      for (int j = 0; j < m->n; j++)
+	m->c[i * m->n + j] += tmp[i * m->n + j] + tmp[j * m->n +i];
+    }
+  
+  free(tmp);
+}
+
 //Check pointer
 void rdc_t_pointer_check(rdc_t m)
 {
@@ -160,6 +180,29 @@ void rdc_t_compute(rdc_t m)
     printf("\033[1;32mSpeedup : %lf\033[0m\n\n", speedup);
   else
     printf("\033[1;31mSpeedup : %lf\033[0m\n\n", speedup);
+
+  // test
+  before = rdtsc();
+  
+  for (int i = 0; i < ITE; i++)
+    {
+      rdc_t_compute_3(m);
+    }
+  
+  after = rdtsc();
+  
+  cycles2 = after - before;
+
+  cpr2 = cycles2 / ITE;
+  printf("\033[1;34mtest :\033[0m\n");
+  print_perf(m->n, cpr2);
+  printf("\n");
+
+  speedup = cpr1 / cpr2;
+  if (speedup >= 1)
+    printf("\033[1;32mSpeedup test : %lf\033[0m\n\n", speedup);
+  else
+    printf("\033[1;31mSpeedup test : %lf\033[0m\n\n", speedup);
 }
 
 //Write the rdc_t C on file
