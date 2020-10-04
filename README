@@ -4,6 +4,7 @@ Note : I am not an expert in English as you are going to see.
 Table of contents
 -----------------
 
+	- Information
 	- Makefile
 	- Overview
 	- Code explaination
@@ -11,6 +12,12 @@ Table of contents
 	- Functions
 	- Versions
 
+
+Information
+----------
+
+The `rdt_c_compute_1` is for Question 1 and 2 with i->j->k loop.
+The `rdt_c_compute_2` is for Question 3 and 4 with i->k->j loop.
 
 
 Makefile
