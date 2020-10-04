@@ -1,8 +1,20 @@
 Note : I am not an expert in English as you are going to see.
 
 
-Informations
-------------
+Table of contents
+-----------------
+
+	- Makefile
+	- Overview
+	- Code explaination
+	- Errors
+	- Functions
+	- Versions
+
+
+
+Makefile
+--------
 
 A Makefile is given to compile the project.
 
@@ -36,7 +48,7 @@ Code explaination
 -----------------
 
 I use a structure to simplify code,
-I always use 3 matrix and the integer which contain their size on all function where the structure is use, so it's for that.
+I always use 3 matrix and the integer which contain their size on all functions where the structure is use now, therfore it's for that.
 
 All function are norlmally explicit.
 
@@ -73,3 +85,5 @@ Versions
 	- v1 : I use 3 `double **` to represent the 3 matrix, and an integer to represent their size
 
 	- v2 : I found that V1 was not organize and I always put all matrix on all funtion parameters. Therefore I decided to create an structure which contain all `double **` and the integer. But this version can't control if the compute function doesn't alter `a` and `b` matrix.
+
+	- v3 : It's based on v2, I switch 2D matrix into 1D.
