@@ -11,9 +11,9 @@
 typedef struct rdc_s
 {
   int n;
-  double **a;
-  double **b;
-  double **c;
+  double *a;
+  double *b;
+  double *c;
 }* rdc_t;
 
 #endif //!_def_h_
