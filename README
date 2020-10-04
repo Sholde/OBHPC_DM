@@ -24,7 +24,7 @@ You can execute the program by typing : `./rdc [size] [output file]`
 
 Note : Makefile clean all files begining by `out`.
 
-You can also run test by typinf `make tests`.
+You can also run test by typing `make tests`.
 
 
 Overview
