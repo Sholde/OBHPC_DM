@@ -108,7 +108,7 @@ void rdc_t_compute_(rdc_t m)
 	{
 	  for (int k = 0; k < m->n; k++)
 	    {
-	      m->c[i][j] += m->a[j][k] * m->b[k][j];
+	      m->c[i][j] += m->a[i][k] * m->b[k][j];
 	    }
 	}
     }
