@@ -1,0 +1,40 @@
+[1;34mi->j->k loop (100 iterations) :[0m
+Size = 5
+Cycles = 1733.290000
+
+[1;34mi->k->j loop (100 iterations) :[0m
+Size = 5
+Cycles = 1737.950000
+
+[1;31mSpeedup : 0.997319[0m
+
+[1;34mi->j->k loop (100 iterations) :[0m
+Size = 10
+Cycles = 13538.110000
+
+[1;34mi->k->j loop (100 iterations) :[0m
+Size = 10
+Cycles = 14684.130000
+
+[1;31mSpeedup : 0.921955[0m
+
+[1;34mi->j->k loop (100 iterations) :[0m
+Size = 50
+Cycles = 1760105.600000
+
+[1;34mi->k->j loop (100 iterations) :[0m
+Size = 50
+Cycles = 1708523.470000
+
+[1;32mSpeedup : 1.030191[0m
+
+[1;34mi->j->k loop (100 iterations) :[0m
+Size = 100
+Cycles = 13743132.330000
+
+[1;34mi->k->j loop (100 iterations) :[0m
+Size = 100
+Cycles = 13924911.520000
+
+[1;31mSpeedup : 0.986946[0m
+
