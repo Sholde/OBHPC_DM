@@ -82,9 +82,9 @@ void rdc_t_compute_(rdc_t m)
 {
   for (int i = 0; i < m->n; i++)
     {
-      for (int j = 0; j < m->n; j++)
+      for (int k = 0; k < m->n; k++)
 	{
-	  for (int k = 0; k < m->n; k++)
+	  for (int j = 0; j < m->n; j++)
 	    {
 	      m->c[i * m->n + j] += m->a[i * m->n + k] * m->b[k * m->n + j];
 	    }
