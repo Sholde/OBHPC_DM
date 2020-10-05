@@ -1,38 +1,70 @@
-#ifndef _rdc_h_
-#define _rdc_h_
+#ifndef _rdp_h_
+#define _rdp_h_
 
 #include "rdtsc.h"
 
-//Init rdp_t with random value
-void rdp_t_init(rdp_t m)
+//Alloc memory
+double *matrix_alloc(const int size)
 {
-  if (!m || !m->a || !m->b || !m->c)
+  double *m = aligned_alloc(size, sizeof(double) * size * size);
+
+  if (!m)
+    return printf("Error: cannot allocate memory\n"), NULL;
+
+  memset(m, 0, size * size);
+  
+  return m;
+}
+
+//Free memory
+void matrix_free(const int size, double *m)
+{
+  if (!m)
+    printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
+
+  memset(m, 0, size * size);
+
+  free(m);
+}
+
+
+//Init matrix with random value
+void matrix_init_random(int size, double *m)
+{
+  if (!m)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
   
-  for(int i = 0; i < m->n; i++)
+  for(int i = 0; i < size * size; i++)
     {
-      for(int j = 0; j < m->n; j++)
-	{
-	  m->a[i * m->n + j] = rand_double();
-	  m->b[i * m->n + j] = rand_double();
-	  m->c[i * m->n + j] = 0;
-	}
+      m[i] = rand_double();
     }
 }
 
-//Print rdp_t on standard output
-void rdp_t_print(FILE *fd, const rdp_t m)
+//Init matrix with Integer value
+void matrix_init_integer(int size, int val, double *m)
 {
-  if (!fd || !m || !m->a || !m->b || !m->c)
+  if (!m)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
   
-  fprintf(fd, "n = %d\n", m->n);
-  
-  for (int i = 0; i < m->n; i++)
+  for(int i = 0; i < size * size; i++)
     {
-      for (int j = 0; j < m->n; j++)
+      m[i] = val;
+    }
+}
+
+//Print matrix on standard output
+void matrix_print(FILE *fd, const int size, const double *m)
+{
+  if (!fd || !m)
+    printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
+  
+  fprintf(fd, "%d\n", size);
+  
+  for (int i = 0; i < size; i++)
+    {
+      for (int j = 0; j < size; j++)
 	{
-	  fprintf(fd, "%lf ", m->c[i * m->n + j]);
+	  fprintf(fd, "%lf ", m[i * size + j]);
 	}
       fprintf(fd, "\n");
     }
@@ -49,9 +81,9 @@ void print_perf(const char *str, int size, double cy, int set)
 }
 
 //Write the C matrix on file
-void rdp_t_write(const char *fname, const rdp_t m)
+void matrix_write(const char *fname, const int size, const double *m)
 {
-  if (!fname)
+  if (!fname || !m)
     printf("Error: NULL pointer!\n"), exit(ERR_PTR);
 
   FILE *fd = fopen(fname, "w");
@@ -59,119 +91,94 @@ void rdp_t_write(const char *fname, const rdp_t m)
   if (!fd)
     printf("Error: NULL pointer!\n"), exit(ERR_PTR);
 
-  rdp_t_print(fd, m);
+  matrix_print(fd, size, m);
 
   fclose(fd);
 }
 
-//Alloc memory
-rdp_t rdp_t_alloc(const unsigned int n)
+double *matrix_read(const char *fname, const int size)
 {
-  rdp_t m = aligned_alloc(ALIGN, sizeof(struct rdp_s));
+  if (!fname)
+    printf("Error: NULL pointer!\n"), exit(ERR_PTR);
 
-  if (!m)
-    return printf("Error: cannot allocate memory\n"), NULL;
+  FILE *fd = fopen(fname, "r");
 
-  m->n = n;
-  m->a = aligned_alloc(n, sizeof(double) * n * n);
-  m->b = aligned_alloc(n, sizeof(double) * n * n);
-  m->c = aligned_alloc(n, sizeof(double) * n * n);
-  
-  if (!m->a || !m->b || !m->c)
-    return printf("Error: cannot allocate memory\n"), NULL;
-  
+  if (!fd)
+    printf("Error: NULL pointer!\n"), exit(ERR_PTR);
+
+  int tmp_size = 0;
+  fscanf(fd, "%d", &tmp_size);
+
+  if (tmp_size != size)
+    return NULL;
+
+  double *m = matrix_alloc(size);
+
+  for (int i = 0; i < size * size; i++)
+    {
+      fscanf(fd, "%lf", &m[i]);
+    }
+
+  fclose(fd);
+
   return m;
 }
 
-//Free memory
-void rdp_t_free(rdp_t m)
-{
-  if (!m || !m->a || !m->b || !m->c)
-    printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
-
-  memset(m->a, 0, m->n * m->n);
-  free(m->a);
-  memset(m->b, 0, m->n * m->n);
-  free(m->b);
-  memset(m->c, 0, m->n * m->n);
-  free(m->c);
-  
-  free(m);
-}
-
 //Compute
-void rdp_t_compute_1(rdp_t m)
+void matrix_compute_1(int size, double *c, const double *a, const double *b)
 {
-  for (int i = 0; i < m->n; i++)
+  for (int i = 0; i < size; i++)
     {
-      for (int j = 0; j < m->n; j++)
+      for (int j = 0; j < size; j++)
 	{
-	  for (int k = 0; k < m->n; k++)
+	  for (int k = 0; k < size; k++)
 	    {
-	      m->c[i * m->n + j] += m->a[i * m->n + k] * m->b[k * m->n + j];
+	      c[i * size + j] += a[i * size + k] * b[k * size + j];
 	    }
 	}
     }
 }
 
-void rdp_t_compute_2(rdp_t m)
+void matrix_compute_2(const int size, double *c, const double *a, const double *b)
 {
-  for (int i = 0; i < m->n; i++)
+  for (int i = 0; i < size; i++)
     {
-      for (int k = 0; k < m->n; k++)
+      for (int k = 0; k < size; k++)
 	{
-	  for (int j = 0; j < m->n; j++)
+	  for (int j = 0; j < size; j++)
 	    {
-	      m->c[i * m->n + j] += m->a[i * m->n + k] * m->b[k * m->n + j];
+	      c[i * size + j] += a[i * size + k] * b[k * size + j];
 	    }
 	}
     }
 }
 
 //test
+/*
 void rdp_t_compute_3(rdp_t m)
 {
-  double *tmp = malloc(sizeof(double) * m->n * m->n);
-  for (int i = 0; i < m->n; i++)
+  double *tmp = malloc(sizeof(double) * size * size);
+  for (int i = 0; i < size; i++)
     {
-      for (int j = 0; j < m->n; j++)
+      for (int j = 0; j < size; j++)
 	{
-	  tmp[i * m->n + j] = m->a[i * m->n + j] * m->b[j * m->n + i];
+	  tmp[i * size + j] = m[i * size + j] * m[j * size + i];
 	}
     }
 
-  for (int i = 0; i < m->n; i++)
+  for (int i = 0; i < size; i++)
     {
-      for (int j = 0; j < m->n; j++)
-	m->c[i * m->n + j] += tmp[i * m->n + j] + tmp[j * m->n +i];
+      for (int j = 0; j < size; j++)
+	m[i * size + j] += tmp[i * size + j] + tmp[j * size +i];
     }
   
   free(tmp);
 }
-
-//Check pointer
-void rdp_t_pointer_check(rdp_t m)
-{
-  if (!m || !m->a || !m->b || !m->c)
-    printf("Error: pointer cannot be NULL!\n"), exit(ERR_PTR);
-}
+*/
 
 //
-void rdp_t_compute(rdp_t m)
+void matrix_compute(const int size, double *c, const double *a, const double *b)
 {
-  rdp_t_pointer_check(m);
-  
-  rdp_t tmp = rdp_t_alloc(m->n);
-  for (int i = 0; i < tmp->n; i++)
-    {
-      for (int j = 0; j < tmp->n; j++)
-	{
-	  tmp->a[i * tmp->n + j] = m->a[i * m->n + j];
-	  tmp->b[i * tmp->n + j] = m->b[i * m->n + j];
-	  tmp->c[i * tmp->n + j] = m->c[i * m->n + j];
-	}
-    }
-
   int set = 0;
   double before, after, t, cycles1, cycles2, cpr1, cpr2, speedup;
   
@@ -182,7 +189,7 @@ void rdp_t_compute(rdp_t m)
 	{
 	  before = rdtsc();
       
-	  rdp_t_compute_1(m);
+	  matrix_compute_1(size, c, a, b);
 
 	  after = rdtsc();
 
@@ -192,13 +199,13 @@ void rdp_t_compute(rdp_t m)
 
       cycles1 += t;
 
-      memset(m->c, 0, m->n * m->n);
+      memset(c, 0, size * size);
     }
   
   cpr1 = cycles1 / ITE;
 
   char str1[] = "i->j->k";
-  print_perf(str1, m->n, cpr1, set);
+  print_perf(str1, size, cpr1, set);
 
   // loop i -> k -> j
   set = 1;
@@ -209,7 +216,7 @@ void rdp_t_compute(rdp_t m)
 	{
 	  before = rdtsc();
       
-	  rdp_t_compute_2(tmp);
+	  matrix_compute_2(size, c, a, b);
 
 	  after = rdtsc();
 
@@ -219,7 +226,7 @@ void rdp_t_compute(rdp_t m)
 
       cycles2 += t;
 
-      memset(tmp->c, 0, tmp->n * tmp->n);
+      memset(c, 0, size * size);
     }
     
   
@@ -227,7 +234,7 @@ void rdp_t_compute(rdp_t m)
   cpr2 = cycles2 / ITE;
 
   char str2[] = "i->k->j";
-  print_perf(str2, m->n, cpr2, set);
+  print_perf(str2, size, cpr2, set);
 
   speedup = cpr1 / cpr2;
   
@@ -237,4 +244,4 @@ void rdp_t_compute(rdp_t m)
     printf("\033[1;31mSpeedup : %lf\033[0m\n\n", speedup);
 }
 
-#endif //!_rdc_h_
+#endif //!_rdp_h_

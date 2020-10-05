@@ -16,8 +16,8 @@ Table of contents
 Information
 ----------
 
-The `rdp_c_compute_1` is for Question 1 and 2 with i->j->k loop.
-The `rdp_c_compute_2` is for Question 3 and 4 with i->k->j loop.
+The `matrix_compute_1` is for Question 1 and 2 with i->j->k loop.
+The `matrix_compute_2` is for Question 3 and 4 with i->k->j loop.
 
 
 Makefile
@@ -27,7 +27,9 @@ A Makefile is given to compile the project.
 
 Use `make` to compile and `make clean` to clean directory.
 
-You can execute the program by typing : `./rdp [size] [output file]`
+You can execute the program by typing : `./rdp [option] ...`. 
+
+The program will show you which argument put by typing `./rdp`.
 
 Note : Makefile clean all files begining by `out`.
 
@@ -53,9 +55,6 @@ After the compute, store the size and content of matrix `c` into output file.
 
 Code explaination
 -----------------
-
-I use a structure to simplify code,
-I always use 3 matrix and the integer which contain their size on all functions where the structure is use now, therfore it's for that.
 
 All function are norlmally explicit.
 
@@ -87,9 +86,12 @@ Funtions
 --------
 
 	- print a matrix in a given file
+	- read a matrix in a given file
 	- init matrix with random value
-	- release memory
-	- compute function
+	- init matrix with positive integer
+	- alloc matrix memory
+	- release matrix memory
+	- compute functions
 	- random functions
 
 
@@ -98,6 +100,8 @@ Versions
 
 	- v1 : I use 3 `double **` to represent the 3 matrix, and an integer to represent their size
 
-	- v2 : I found that V1 was not organize and I always put all matrix on all funtion parameters. Therefore I decided to create an structure which contain all `double **` and the integer. But this version can't control if the compute function doesn't alter `a` and `b` matrix.
+	- v2 : I found that v1 was not organize and I always put all matrix on all funtion parameters. Therefore I decided to create an structure which contain all `double **` and the integer. But this version can't control if the compute function doesn't alter `a` and `b` matrix.
 
 	- v3 : It's based on v2, I switch 2D matrix into 1D.
+
+	- v4 : It's the current version. I use `double *` and an integer to represent matrix, thus it fix v2 and v3 problem. And add some features such as generate a matrix with random value or fix integer value, to store on file and maybe extract this matrix to compute with another matrix later.

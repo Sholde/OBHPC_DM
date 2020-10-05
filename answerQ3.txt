@@ -1,1 +1,2 @@
-Execute i->k->j is not really faster than i->j->k, because we make same number of iteration and compute.
+Execute i->k->j is not really faster than i->j->k with v3 code, but with v4 code it's a little bit faster.
+Maybe a question of memory...

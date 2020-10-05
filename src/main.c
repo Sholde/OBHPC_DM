@@ -11,34 +11,103 @@
 int main(int argc, char **argv)
 {
   //Check argument (needed 3)
-  if (argc != 3)
-    return printf("Usage: %s [size] [output file]\n", argv[0]), ERR_ARG;
+  if (argc < 4)
+    {
+      printf("Usage:\n\n");
+
+      printf("Generate with Random value: %s -r [size] [output file]\n", argv[0]);
+
+      printf("\n");
+
+      printf("Generate with fix Integer: %s -i [value] [size] [output file]\n", argv[0]);
+
+      printf("\n");
+
+      printf("Compute: %s -c [size] [input file] [input file] [output file]\n", argv[0]);
+            
+      return ERR_ARG;
+    }
+  else if (strcmp(argv[1], "-r") == 0)
+    {
+      int size = atoi(argv[2]);
+
+      //Check number (needed to be positive)
+      if (size <= 0)
+	return printf("You must use a positive interger between 1 and 2^31-1\n"), ERR_ARG;
+
+      double *m = matrix_alloc(size);
+      if (!m)
+	return printf("Error: pointer cannot be NULL\n"), ERR_PTR;
   
-  int n = atoi(argv[1]);
-
-  //Check number (needed to be positive)
-  if (n <= 0)
-    return printf("You must use a positive number\n"), ERR_ARG;
-  if (n > MAX_N)
-    return printf("You must enter a number <= %d\n", MAX_N);
-
-  //Alloction
-  rdp_t m = rdp_t_alloc(n);
-  if (!m)
-    return printf("Error: pointer cannot be NULL\n"), ERR_PTR;
+      //Initialisation
+      matrix_init_random(size, m);
   
-  //Initialisation
-  seed_init();
-  rdp_t_init(m);
+      //Print
+      matrix_write(argv[3], size, m);
+
+      //Free memory
+      matrix_free(size, m);
+    }
+  else if (strcmp(argv[1], "-n") == 0)
+    {
+      int n = atoi(argv[2]);
+      int size = atoi(argv[3]);
+      
+      //Check number (needed to be positive)
+      if (size <= 0 || n <= 0)
+	return printf("You must use a positive interger between 1 and 2^31-1\n"), ERR_ARG;
+
+      double *m = matrix_alloc(size);
+      if (!m)
+	return printf("Error: pointer cannot be NULL\n"), ERR_PTR;
   
-  //Compute
-  rdp_t_compute(m);
+      //Initialisation
+      matrix_init_integer(size, n, m);
+  
+      //Print
+      matrix_write(argv[4], size, m);
 
-  //Print
-  rdp_t_write(argv[2], m);
+      //Free memory
+      matrix_free(size, m);
+    }
+  else if (strcmp(argv[1], "-c") == 0)
+    {
+      int size = atoi(argv[2]);
 
-  //Free memory
-  rdp_t_free(m);
+      double *a = matrix_read(argv[3], size);
+      if (!a)
+	return printf("Error: pointer cannot be NULL\n"), ERR_PTR;
+      double *b = matrix_read(argv[4], size);
+      if (!b)
+	return printf("Error: pointer cannot be NULL\n"), ERR_PTR;
+      double *c = matrix_alloc(size);
+      if (!c)
+	return printf("Error: pointer cannot be NULL\n"), ERR_PTR;
+
+      matrix_compute(size, c, a, b);
+
+      matrix_write(argv[5], size, c);
+      
+      matrix_free(size, a);
+      matrix_free(size, b);
+      matrix_free(size, c);
+    }
+  else
+    {
+      printf("Usage:\n\n");
+
+      printf("Fill the generated matrix with random value:\n\t %s -r [size] [output file]\n", argv[0]);
+
+      printf("\n");
+
+      printf("Fill the generated matrix with an positive integer:\n\t %s -n [value] [size] [output file]\n", argv[0]);
+
+      printf("\n");
+
+      printf("Compute: %s -c [size] [input file] [input file] [output file]\n", argv[0]);
+            
+      return ERR_ARG;
+    }
   
   return 0;
 }
