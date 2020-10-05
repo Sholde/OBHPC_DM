@@ -88,9 +88,12 @@ void rdp_t_free(rdp_t m)
 {
   if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
-  
+
+  memset(m->a, 0, m->n * m->n);
   free(m->a);
+  memset(m->b, 0, m->n * m->n);
   free(m->b);
+  memset(m->c, 0, m->n * m->n);
   free(m->c);
   
   free(m);
