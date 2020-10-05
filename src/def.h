@@ -8,14 +8,14 @@
 
 #define MAX_N RAND_MAX
 
-#define ITE 100
+#define ITE 500
 
-typedef struct rdc_s
+typedef struct rdp_s
 {
   int n;
   double *a;
   double *b;
   double *c;
-}* rdc_t;
+}* rdp_t;
 
 #endif //!_def_h_

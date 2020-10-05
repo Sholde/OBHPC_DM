@@ -3,8 +3,8 @@
 
 #include "rdtsc.h"
 
-//Init rdc_t with random value
-void rdc_t_init(rdc_t m)
+//Init rdp_t with random value
+void rdp_t_init(rdp_t m)
 {
   if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
@@ -13,15 +13,15 @@ void rdc_t_init(rdc_t m)
     {
       for(int j = 0; j < m->n; j++)
 	{
-	  m->a[i * m->n + j] = 1; //rand_double();
-	  m->b[i * m->n + j] = 1; //rand_double();
-	  m->c[i * m->n + j] = 1; //rand_double();
+	  m->a[i * m->n + j] = rand_double();
+	  m->b[i * m->n + j] = rand_double();
+	  m->c[i * m->n + j] = rand_double();
 	}
     }
 }
 
-//Print rdc_t on standard output
-void rdc_t_print(FILE *fd, const rdc_t m)
+//Print rdp_t on standard output
+void rdp_t_print(FILE *fd, const rdp_t m)
 {
   if (!fd || !m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
@@ -39,16 +39,19 @@ void rdc_t_print(FILE *fd, const rdc_t m)
 }
 
 //Print performance
-void print_perf(int n, double p)
+void print_perf(const char *str, int size, double cy, int set)
 {
-  printf("Size = %d\n", n);
-  printf("Cycles = %lf\n", p);
+  if (!set)
+    printf("\033[1;34mSize = %d\033[0m\n", size);
+  
+  printf("%s\t%lf\tcycles(average)\n", str, cy);
+  printf("\n");
 }
 
 //Alloc memory
-rdc_t rdc_t_alloc(const unsigned int n)
+rdp_t rdp_t_alloc(const unsigned int n)
 {
-  rdc_t m = aligned_alloc(ALIGN, sizeof(struct rdc_s));
+  rdp_t m = aligned_alloc(ALIGN, sizeof(struct rdp_s));
 
   if (!m)
     return printf("Error: cannot allocate memory\n"), NULL;
@@ -65,7 +68,7 @@ rdc_t rdc_t_alloc(const unsigned int n)
 }
 
 //Free memory
-void rdc_t_free(rdc_t m)
+void rdp_t_free(rdp_t m)
 {
   if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
@@ -78,7 +81,7 @@ void rdc_t_free(rdc_t m)
 }
 
 //Compute
-void rdc_t_compute_1(rdc_t m)
+void rdp_t_compute_1(rdp_t m)
 {
   for (int i = 0; i < m->n; i++)
     {
@@ -92,7 +95,7 @@ void rdc_t_compute_1(rdc_t m)
     }
 }
 
-void rdc_t_compute_2(rdc_t m)
+void rdp_t_compute_2(rdp_t m)
 {
   for (int i = 0; i < m->n; i++)
     {
@@ -106,7 +109,8 @@ void rdc_t_compute_2(rdc_t m)
     }
 }
 
-void rdc_t_compute_3(rdc_t m)
+//test
+void rdp_t_compute_3(rdp_t m)
 {
   double *tmp = malloc(sizeof(double) * m->n * m->n);
   for (int i = 0; i < m->n; i++)
@@ -127,86 +131,91 @@ void rdc_t_compute_3(rdc_t m)
 }
 
 //Check pointer
-void rdc_t_pointer_check(rdc_t m)
+void rdp_t_pointer_check(rdp_t m)
 {
   if (!m || !m->a || !m->b || !m->c)
     printf("Error: pointer cannot be NULL!\n"), exit(ERR_PTR);
 }
 
 //
-void rdc_t_compute(rdc_t m)
+void rdp_t_compute(rdp_t m)
 {
-  rdc_t_pointer_check(m);
+  rdp_t_pointer_check(m);
+  
+  rdp_t tmp = rdp_t_alloc(m->n);
+  for (int i = 0; i < tmp->n; i++)
+    {
+      for (int j = 0; j < tmp->n; j++)
+	{
+	  tmp->a[i * tmp->n + j] = m->a[i * m->n + j];
+	  tmp->b[i * tmp->n + j] = m->b[i * m->n + j];
+	  tmp->c[i * tmp->n + j] = m->c[i * m->n + j];
+	}
+    }
 
-  double before, after, cycles1, cycles2, cpr1, cpr2, speedup;
+  int set = 0;
+  double before, after, t, cycles1, cycles2, cpr1, cpr2, speedup;
   
   // loop i -> j -> k
-  before = rdtsc();
-  
   for (int i = 0; i < ITE; i++)
     {
-      rdc_t_compute_1(m);
+      do
+	{
+	  before = rdtsc();
+      
+	  rdp_t_compute_1(m);
+
+	  after = rdtsc();
+
+	  t = after - before;
+	}
+      while (cycles1 < 0);
+
+      cycles1 += t;
     }
   
-  after = rdtsc();
-  
-  cycles1 = after - before;
-
   cpr1 = cycles1 / ITE;
 
-  printf("\033[1;34mi->j->k loop (%d iterations) :\033[0m\n", ITE);
-  print_perf(m->n, cpr1);
-  printf("\n");
+  char str1[] = "i->j->k";
+  print_perf(str1, m->n, cpr1, set);
 
   // loop i -> k -> j
-  before = rdtsc();
+  set = 1;
   
   for (int i = 0; i < ITE; i++)
     {
-      rdc_t_compute_2(m);
+      do
+	{
+	  before = rdtsc();
+      
+	  rdp_t_compute_2(tmp);
+
+	  after = rdtsc();
+
+	  t = after - before;
+	}
+      while (cycles2 < 0);
+
+      cycles2 += t;
     }
+    
   
-  after = rdtsc();
-  
-  cycles2 = after - before;
 
   cpr2 = cycles2 / ITE;
-  printf("\033[1;34mi->k->j loop (%d iterations) :\033[0m\n", ITE);
-  print_perf(m->n, cpr2);
-  printf("\n");
+
+  char str2[] = "i->k->j";
+  print_perf(str2, m->n, cpr2, set);
 
   speedup = cpr1 / cpr2;
+  
   if (speedup >= 1)
     printf("\033[1;32mSpeedup : %lf\033[0m\n\n", speedup);
   else
     printf("\033[1;31mSpeedup : %lf\033[0m\n\n", speedup);
-
-  // test
-  before = rdtsc();
-  
-  for (int i = 0; i < ITE; i++)
-    {
-      rdc_t_compute_3(m);
-    }
-  
-  after = rdtsc();
-  
-  cycles2 = after - before;
-
-  cpr2 = cycles2 / ITE;
-  printf("\033[1;34mtest :\033[0m\n");
-  print_perf(m->n, cpr2);
-  printf("\n");
-
-  speedup = cpr1 / cpr2;
-  if (speedup >= 1)
-    printf("\033[1;32mSpeedup test : %lf\033[0m\n\n", speedup);
-  else
-    printf("\033[1;31mSpeedup test : %lf\033[0m\n\n", speedup);
 }
 
-//Write the rdc_t C on file
-void rdc_t_write(const char *fname, const rdc_t m)
+//Write the rdp_t C on file
+void rdp_t_write(const char *fname, const rdp_t m)
 {
   if (!fname)
     printf("Error: NULL pointer!\n"), exit(ERR_PTR);
@@ -216,7 +225,7 @@ void rdc_t_write(const char *fname, const rdc_t m)
   if (!fd)
     printf("Error: NULL pointer!\n"), exit(ERR_PTR);
 
-  rdc_t_print(fd, m);
+  rdp_t_print(fd, m);
 
   fclose(fd);
 }

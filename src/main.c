@@ -4,7 +4,7 @@
 
 #include "def.h"
 #include "rand.h"
-#include "rdc.h"
+#include "rdp.h"
 
 //Main function
 int main(int argc, char **argv)
@@ -22,22 +22,22 @@ int main(int argc, char **argv)
     return printf("You must enter a number <= %d\n", MAX_N);
 
   //Alloction
-  rdc_t m = rdc_t_alloc(n);
+  rdp_t m = rdp_t_alloc(n);
   if (!m)
     return printf("Error: pointer cannot be NULL\n"), ERR_PTR;
   
   //Initialisation
   seed_init();
-  rdc_t_init(m);
+  rdp_t_init(m);
   
   //Compute
-  rdc_t_compute(m);
+  rdp_t_compute(m);
 
   //Print
-  rdc_t_write(argv[2], m);
+  rdp_t_write(argv[2], m);
 
   //Free memory
-  rdc_t_free(m);
+  rdp_t_free(m);
   
   return 0;
 }
