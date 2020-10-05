@@ -16,8 +16,8 @@ Table of contents
 Information
 ----------
 
-The `rdt_c_compute_1` is for Question 1 and 2 with i->j->k loop.
-The `rdt_c_compute_2` is for Question 3 and 4 with i->k->j loop.
+The `rdp_c_compute_1` is for Question 1 and 2 with i->j->k loop.
+The `rdp_c_compute_2` is for Question 3 and 4 with i->k->j loop.
 
 
 Makefile
@@ -27,7 +27,7 @@ A Makefile is given to compile the project.
 
 Use `make` to compile and `make clean` to clean directory.
 
-You can execute the program by typing : `./rdc [size] [output file]`
+You can execute the program by typing : `./rdp [size] [output file]`
 
 Note : Makefile clean all files begining by `out`.
 
@@ -63,6 +63,13 @@ Little information about my randoms function :
        - rand_sign : use for random 1 and -1
        - rand_double : use for random double, I pick 2 random integer and divide between them and after aply rand_sign
 
+For my allocation function, I use aligned_alloc with `n` alignement because on manual it said that alignement should be a multiple of size.
+I set 0 on all matrix before to release memory.
+
+I tried to find a better algorithm in my head but I didn't find. It's the `rdp_t_compute_3` function.
+
+I decided to only print cycles average of 2 compute functions.
+
 
 Errors
 ------
@@ -72,7 +79,7 @@ Error is handle by `if` statements whenever it is necessary to assume that funct
 Except compute function to don't stop process when the cpu compute the reduc/dotprod, so I use the trick that you show us, which is to call an function who compute after pointers are checks.
 
 There are 2 error codes :
-      - ERR_ARG : error of argument (i.e. : ./rdc 5, ther is not output file)
+      - ERR_ARG : error of argument (i.e. : ./rdp 5, ther is not output file)
       - ERR_PTR : error of pointer (i.e. : the pointer is NULL)
 
 
