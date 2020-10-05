@@ -15,7 +15,7 @@ void rdp_t_init(rdp_t m)
 	{
 	  m->a[i * m->n + j] = rand_double();
 	  m->b[i * m->n + j] = rand_double();
-	  m->c[i * m->n + j] = rand_double();
+	  m->c[i * m->n + j] = 0;
 	}
     }
 }
@@ -57,9 +57,9 @@ rdp_t rdp_t_alloc(const unsigned int n)
     return printf("Error: cannot allocate memory\n"), NULL;
 
   m->n = n;
-  m->a = aligned_alloc(ALIGN, sizeof(double) * n * n);
-  m->b = aligned_alloc(ALIGN, sizeof(double) * n * n);
-  m->c = aligned_alloc(ALIGN, sizeof(double) * n * n);
+  m->a = aligned_alloc(n, sizeof(double) * n * n);
+  m->b = aligned_alloc(n, sizeof(double) * n * n);
+  m->c = aligned_alloc(n, sizeof(double) * n * n);
   
   if (!m->a || !m->b || !m->c)
     return printf("Error: cannot allocate memory\n"), NULL;
@@ -172,6 +172,8 @@ void rdp_t_compute(rdp_t m)
       while (cycles1 < 0);
 
       cycles1 += t;
+
+      memset(m->c, 0, m->n * m->n);
     }
   
   cpr1 = cycles1 / ITE;
@@ -197,6 +199,8 @@ void rdp_t_compute(rdp_t m)
       while (cycles2 < 0);
 
       cycles2 += t;
+
+      memset(tmp->c, 0, tmp->n * tmp->n);
     }
     
   
