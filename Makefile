@@ -6,10 +6,10 @@ OFLAGS = -O0
 
 all: clean rdp
 
-rdp: main.c
+rdp: src/main.c
 	$(CC) $(CFLAGS) $(OFLAGS) $^ -o $@
 
-opti: main.c
+opti: src/main.c
 	$(CC) $(CFLAGS) -Ofast $^ -o $@
 
 tests: rdp
