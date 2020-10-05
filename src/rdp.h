@@ -48,6 +48,22 @@ void print_perf(const char *str, int size, double cy, int set)
   printf("\n");
 }
 
+//Write the C matrix on file
+void rdp_t_write(const char *fname, const rdp_t m)
+{
+  if (!fname)
+    printf("Error: NULL pointer!\n"), exit(ERR_PTR);
+
+  FILE *fd = fopen(fname, "w");
+
+  if (!fd)
+    printf("Error: NULL pointer!\n"), exit(ERR_PTR);
+
+  rdp_t_print(fd, m);
+
+  fclose(fd);
+}
+
 //Alloc memory
 rdp_t rdp_t_alloc(const unsigned int n)
 {
@@ -216,22 +232,6 @@ void rdp_t_compute(rdp_t m)
     printf("\033[1;32mSpeedup : %lf\033[0m\n\n", speedup);
   else
     printf("\033[1;31mSpeedup : %lf\033[0m\n\n", speedup);
-}
-
-//Write the rdp_t C on file
-void rdp_t_write(const char *fname, const rdp_t m)
-{
-  if (!fname)
-    printf("Error: NULL pointer!\n"), exit(ERR_PTR);
-
-  FILE *fd = fopen(fname, "w");
-
-  if (!fd)
-    printf("Error: NULL pointer!\n"), exit(ERR_PTR);
-
-  rdp_t_print(fd, m);
-
-  fclose(fd);
 }
 
 #endif //!_rdc_h_
