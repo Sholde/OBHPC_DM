@@ -1,0 +1,28 @@
+[1;34mSize = 5[0m
+i->j->k	1739.908000	cycles(average)
+
+i->k->j	1749.412000	cycles(average)
+
+[1;31mSpeedup : 0.994567[0m
+
+[1;34mSize = 10[0m
+i->j->k	14269.576000	cycles(average)
+
+i->k->j	14260.724000	cycles(average)
+
+[1;32mSpeedup : 1.000621[0m
+
+[1;34mSize = 50[0m
+i->j->k	1688273.322000	cycles(average)
+
+i->k->j	1690658.776000	cycles(average)
+
+[1;31mSpeedup : 0.998589[0m
+
+[1;34mSize = 100[0m
+i->j->k	13827490.746000	cycles(average)
+
+i->k->j	13810566.720000	cycles(average)
+
+[1;32mSpeedup : 1.001225[0m
+
