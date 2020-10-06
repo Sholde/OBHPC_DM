@@ -59,9 +59,9 @@ int main(int argc, char **argv)
       int size = atoi(argv[3]);
       
       //Check number (needed to be positive)
-      if (size <= 0 || n <= 0)
-	return printf("You must use a positive interger between 1 and 2^31-1\n"), ERR_ARG;
-
+      if (size <= 0 || size > MAX_N)
+	return printf("You must use a positive interger between 1 and %d\n", MAX_N), ERR_ARG;
+      
       double *m = matrix_alloc(size);
       if (!m)
 	return printf("Error: pointer cannot be NULL\n"), ERR_PTR;
