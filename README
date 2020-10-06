@@ -89,7 +89,7 @@ Funtions
 	- print a matrix in a given file
 	- read a matrix in a given file
 	- init matrix with random value
-	- init matrix with positive integer
+	- init matrix with integer
 	- alloc matrix memory
 	- release matrix memory
 	- compute functions
