@@ -7,24 +7,29 @@
 #include "rand.h"
 #include "rdp.h"
 
+//
+void print_help(const char *name)
+{
+  printf("Usage:\n\n");
+
+  printf("Fill the generated matrix with random value:\n\t%s -r [size] [output file]\n", name);
+
+  printf("\n");
+
+  printf("Fill the generated matrix with an positive integer:\n\t%s -n [value] [size] [output file]\n", name);
+
+  printf("\n");
+
+  printf("Compute:\n\t%s -c [size] [input file] [input file] [output file]\n", name);
+}
+
 //Main function
 int main(int argc, char **argv)
 {
   //Check argument (needed 3)
   if (argc < 4)
     {
-      printf("Usage:\n\n");
-
-      printf("Generate with Random value: %s -r [size] [output file]\n", argv[0]);
-
-      printf("\n");
-
-      printf("Generate with fix Integer: %s -i [value] [size] [output file]\n", argv[0]);
-
-      printf("\n");
-
-      printf("Compute: %s -c [size] [input file] [input file] [output file]\n", argv[0]);
-            
+      print_help(argv[0]);
       return ERR_ARG;
     }
   else if (strcmp(argv[1], "-r") == 0)
@@ -94,18 +99,7 @@ int main(int argc, char **argv)
     }
   else
     {
-      printf("Usage:\n\n");
-
-      printf("Fill the generated matrix with random value:\n\t %s -r [size] [output file]\n", argv[0]);
-
-      printf("\n");
-
-      printf("Fill the generated matrix with an positive integer:\n\t %s -n [value] [size] [output file]\n", argv[0]);
-
-      printf("\n");
-
-      printf("Compute: %s -c [size] [input file] [input file] [output file]\n", argv[0]);
-            
+      print_help(argv[0]);
       return ERR_ARG;
     }
   
