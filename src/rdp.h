@@ -29,7 +29,7 @@ void matrix_free(const int size, double *m)
 
 
 //Init matrix with random value
-void matrix_init_random(int size, double *m)
+void matrix_init_random(const int size, double *m)
 {
   if (!m)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
@@ -41,7 +41,7 @@ void matrix_init_random(int size, double *m)
 }
 
 //Init matrix with Integer value
-void matrix_init_integer(int size, int val, double *m)
+void matrix_init_integer(const int size, const int val, double *m)
 {
   if (!m)
     printf("Error: pointer cannot be NULL\n"), exit(ERR_PTR);
@@ -71,7 +71,7 @@ void matrix_print(FILE *fd, const int size, const double *m)
 }
 
 //Print performance
-void print_perf(const char *str, int size, double cy, int set)
+void print_perf(const char *str, const int size, const double cy, const int set)
 {
   if (!set)
     printf("\033[1;34mSize = %d\033[0m\n", size);
@@ -125,7 +125,7 @@ double *matrix_read(const char *fname, const int size)
 }
 
 //Compute
-void matrix_compute_1(int size, double *c, const double *a, const double *b)
+void matrix_compute_1(const int size, double *c, const double *a, const double *b)
 {
   for (int i = 0; i < size; i++)
     {
