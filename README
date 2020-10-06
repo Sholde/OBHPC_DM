@@ -40,7 +40,7 @@ You can also run test by typing `make tests`.
 Overview
 --------
 
-This code generate 3 matrix with random values and apply this algorithm :
+This code apply this algorithm :
 
 for (i < n)
     for (j < n)
@@ -63,23 +63,23 @@ Little information about my randoms function :
        - rand_sign : use for random 1 and -1
        - rand_double : use for random double, I pick 2 random integer and divide between them and after aply rand_sign
 
-For my allocation function, I use aligned_alloc with `n` alignement because on manual it said that alignement should be a multiple of size.
+For my allocation function, I use aligned_alloc with `n` alignement, because on manual it said that alignement should be a multiple of size.
 I set 0 on all matrix before to release memory.
 
 I tried to find a better algorithm in my head but I didn't find. It's the `rdp_t_compute_3` function.
 
-I decided to only print cycles average of 2 compute functions.
+I decided to only print cycles average.
 
 
 Errors
 ------
 
-Error is handle by `if` statements whenever it is necessary to assume that functions are not bad uses.
+Error is handle by `if` statements whenever it is necessary to verify that functions are not bad uses.
 
 Except compute function to don't stop process when the cpu compute the reduc/dotprod, so I use the trick that you show us, which is to call an function who compute after pointers are checks.
 
 There are 2 error codes :
-      - ERR_ARG : error of argument (i.e. : ./rdp 5, ther is not output file)
+      - ERR_ARG : error of argument (i.e. : ./rdp 5, bad arguments)
       - ERR_PTR : error of pointer (i.e. : the pointer is NULL)
 
 
@@ -99,13 +99,13 @@ Funtions
 Versions
 --------
 
-	- v1 : I use 3 `double **` to represent the 3 matrix, and an integer to represent their size
+	- v1 : I use 3 `double **` to represent the 3 matrix, and an integer to represent their size.
 
-	- v2 : I found that v1 was not organize and I always put all matrix on all funtion parameters. Therefore I decided to create an structure which contain all `double **` and the integer. But this version can't control if the compute function doesn't alter `a` and `b` matrix.
+	- v2 : I found that v1 was not organize and I always put all matrix on all funtion parameters. Therefore I decided to create a structure which contain all `double **` and the integer. But this version can't control if the compute function doesn't alter `a` and `b` matrix.
 
 	- v3 : It's based on v2, I switch 2D matrix into 1D.
 
-	- v4 : It's the current version. It's really faster than v3. I use `double *` and an integer to represent matrix, thus it fix v2 and v3 problem. And add some features such as generate a matrix with random value or fix integer value, to store on file and may be extract this matrix to compute with another matrix later.
+	- v4 : It's the current version. It's really faster than v3. I use `double *` and an integer to represent matrix, thus it fix v2 and v3 problem. And add some features such as generate a matrix with random value or fix an integer number on all matrix, to store on file and may be extract this matrix to compute with another matrix later.
 
 
 Performances
