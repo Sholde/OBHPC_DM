@@ -45,7 +45,7 @@ This code generate 3 matrix with random values and apply this algorithm :
 for (i < n)
     for (j < n)
     	for (k < n)
-	    c[i][k] += a[i][k] * b[i][k];
+	    c[i][j] += a[i][k] * b[k][j];
 
 
 n : size of all matrix (they are square matrix with the same size)
