@@ -11,6 +11,7 @@ Table of contents
 	- Errors
 	- Functions
 	- Versions
+	- Performances
 
 
 Information
@@ -104,4 +105,10 @@ Versions
 
 	- v3 : It's based on v2, I switch 2D matrix into 1D.
 
-	- v4 : It's the current version. It's really faster than v3. I use `double *` and an integer to represent matrix, thus it fix v2 and v3 problem. And add some features such as generate a matrix with random value or fix integer value, to store on file and maybe extract this matrix to compute with another matrix later.
+	- v4 : It's the current version. It's really faster than v3. I use `double *` and an integer to represent matrix, thus it fix v2 and v3 problem. And add some features such as generate a matrix with random value or fix integer value, to store on file and may be extract this matrix to compute with another matrix later.
+
+
+Performances
+------------
+
+I have just measure v3 and v4 because I foreget to measure v1 and v2 (and the performance print function was not on these versions, also I don't if I change old commit that don't alter new commit).
