@@ -104,4 +104,4 @@ Versions
 
 	- v3 : It's based on v2, I switch 2D matrix into 1D.
 
-	- v4 : It's the current version. I use `double *` and an integer to represent matrix, thus it fix v2 and v3 problem. And add some features such as generate a matrix with random value or fix integer value, to store on file and maybe extract this matrix to compute with another matrix later.
+	- v4 : It's the current version. It's really faster than v3. I use `double *` and an integer to represent matrix, thus it fix v2 and v3 problem. And add some features such as generate a matrix with random value or fix integer value, to store on file and maybe extract this matrix to compute with another matrix later.
